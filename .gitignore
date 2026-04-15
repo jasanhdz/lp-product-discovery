@@ -3,3 +3,6 @@ dist/
 stats.json
 .DS_Store
 *.log
+.env
+.env.*
+!.env.example

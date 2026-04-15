@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
 
 module.exports = (env, argv) => {
   const isDev = argv.mode === 'development'
@@ -10,7 +11,7 @@ module.exports = (env, argv) => {
   return {
     entry: {
       // pages
-      app: './src/index.jsx',
+      app: './src/index.jsx'
     },
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -111,6 +112,7 @@ module.exports = (env, argv) => {
       ]
     },
     plugins: [
+      new Dotenv({ systemvars: true }),
       new HtmlWebpackPlugin({
         template: './public/index.html',
         minify: !isDev && {

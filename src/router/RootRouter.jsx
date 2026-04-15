@@ -1,12 +1,10 @@
 import { Navigate } from 'react-router-dom'
 import { APP_ROUTES, AUTH_ROUTES } from '@/constants/route-paths'
 import LoaderPage from '@/pages/Loader'
+import { useAppSelector } from '@/store/hooks'
 
 export default function RootRoute() {
-  const { isLoadingSession, isLoggedIn } = {
-    isLoadingSession: false,
-    isLoggedIn: true
-  }
+  const { isLoadingSession, isLoggedIn } = useAppSelector((state) => state.session)
 
   if (isLoadingSession) return <LoaderPage />
 
