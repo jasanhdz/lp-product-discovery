@@ -2,6 +2,7 @@ import { AppRoute } from '@/types/router'
 import { AUTH_ROUTES, APP_ROUTES } from '@/constants/route-paths'
 
 import SignInPage from '@/pages/SignIn'
+import SignUpPage from '@/pages/SignUp'
 import ProductsPage from '@/pages/Products'
 import ProductDetailPage from '@/pages/ProductDetail'
 import DynamicFormPage from '@/pages/DynamicForm'
@@ -12,6 +13,12 @@ export const publicRoutes: AppRoute[] = [
     title: 'Sign In',
     path: AUTH_ROUTES.SIGN_IN,
     component: SignInPage,
+    layout: 'AUTH'
+  },
+  {
+    title: 'Sign Up',
+    path: AUTH_ROUTES.SIGN_UP,
+    component: SignUpPage,
     layout: 'AUTH'
   }
 ]

@@ -1,36 +1,25 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '@/store/hooks'
 import { loginSuccess } from '@/store/slices/sessionSlice'
 import { storage } from '@/utils/storage'
 import { ENV } from '@/constants/environment'
 import hmacSHA256 from 'crypto-js/hmac-sha256'
 import Base64Url from 'crypto-js/enc-base64url'
-import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  InputAdornment,
-  IconButton,
-  ThemeProvider,
-  createTheme
-} from '@mui/material'
+import { Box, TextField, Button, InputAdornment, IconButton, ThemeProvider, createTheme, CircularProgress } from '@mui/material'
 import { Visibility, VisibilityOff, Email, Lock } from '@mui/icons-material'
 import styles from './styles.module.scss'
 
-// Creamos un tema oscuro temporal específico para que los inputs
-// de Material UI hagan buen contraste con el fondo espacial
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
-    primary: {
-      main: '#60a5fa' // Un azul claro e invitante
-    }
+    primary: { main: '#97ce4c' }
   }
 })
 
 export default function SignInPage() {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState('')
@@ -42,22 +31,17 @@ export default function SignInPage() {
     setIsLoading(true)
 
     setTimeout(() => {
-      // Creamos un JWT estructurado matemáticamente válido para que 
-      // `jwt-decode` no se rompa al recargar la página mañana.
       const fakeHeader = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
-      const fakeUser = { id: 'usr_xyz123', email, name: 'Super Piloto' }
-      
-      // Encriptación ultra realista (HMAC-SHA256)
+      const fakeUser = { id: 'usr_xyz123', email, name: email.split('@')[0] }
+
       const payloadBase64 = btoa(JSON.stringify(fakeUser))
       const fakePayload = payloadBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-      
-      // Generamos la firma criptográfica exacta basada en tu ENV
+
       const dataToSign = `${fakeHeader}.${fakePayload}`
       const secretSignature = Base64Url.stringify(hmacSHA256(dataToSign, ENV.DUMMY_JWT_SIGNATURE))
-      
+
       const fakeToken = `${dataToSign}.${secretSignature}`
 
-      // GRABAMOS en persistencia ÚNICAMENTE el token.
       storage.setToken(fakeToken)
 
       dispatch(
@@ -74,31 +58,25 @@ export default function SignInPage() {
     <ThemeProvider theme={darkTheme}>
       <div className={styles.container}>
         <div className={styles.glassCard}>
-          {/* Encabezado */}
-          <Box display='flex' flexDirection='column' alignItems='center' mb={2}>
-            <Typography variant='h4' fontWeight='800' color='primary.main' gutterBottom>
-              Bienvenido
-            </Typography>
-            <Typography variant='body2' color='text.secondary' textAlign='center'>
-              A la base de misiones intergalácticas. Inicia sesión para descubrir el universo.
-            </Typography>
-          </Box>
+          {/* Portal Logo */}
+          <div className={styles.logoArea}>
+            <div className={styles.portalRing}>
+              <span className={styles.portalIcon}>🛸</span>
+            </div>
+            <div className={styles.authTitle}>Welcome Back</div>
+            <div className={styles.authSubtitle}>Citadel Authentication Portal</div>
+          </div>
 
-          {/* Formulario usando el Box de MUI en lugar de flex-col genérico */}
-          <Box
-            component='form'
-            onSubmit={handleLogin}
-            display='flex'
-            flexDirection='column'
-            gap={3}
-          >
+          {/* Login Form */}
+          <Box component='form' onSubmit={handleLogin} className={styles.formGroup}>
             <TextField
               fullWidth
               variant='outlined'
-              label='Correo Electrónico'
+              label='Interdimensional Email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              className={styles.inputField}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
@@ -112,10 +90,11 @@ export default function SignInPage() {
               fullWidth
               variant='outlined'
               type={showPassword ? 'text' : 'password'}
-              label='Contraseña'
+              label='Access Code'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className={styles.inputField}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
@@ -124,7 +103,7 @@ export default function SignInPage() {
                 ),
                 endAdornment: (
                   <InputAdornment position='end'>
-                    <IconButton onClick={() => setShowPassword(!showPassword)} edge='end'>
+                    <IconButton onClick={() => setShowPassword(!showPassword)} edge='end' sx={{ color: 'rgba(255,255,255,0.3)' }}>
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
@@ -132,16 +111,25 @@ export default function SignInPage() {
               }}
             />
 
-            <Button
-              type='submit'
-              variant='contained'
-              size='large'
-              disabled={isLoading}
-              className={styles.submitBtn}
-            >
-              {isLoading ? 'Autenticando cápsula...' : 'Iniciar Sesión'}
+            <Button type='submit' variant='contained' size='large' disabled={isLoading} className={styles.submitBtn}>
+              {isLoading ? (
+                <span className={styles.loadingText}>
+                  <CircularProgress size={20} sx={{ color: '#0a0b10' }} />
+                  Authenticating...
+                </span>
+              ) : (
+                'OPEN PORTAL'
+              )}
             </Button>
           </Box>
+
+          {/* Footer Link to Sign Up */}
+          <div className={styles.footerLink}>
+            <span>New to the Citadel?</span>
+            <button type='button' onClick={() => navigate('/auth/sign-up')}>
+              Register Here
+            </button>
+          </div>
         </div>
       </div>
     </ThemeProvider>
