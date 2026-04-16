@@ -42,5 +42,18 @@ export const storage = {
 
   clearSession: (): void => {
     localStorage.removeItem(TOKEN_KEY)
+  },
+
+  getWhitelist: (userId: string | number): number[] => {
+    try {
+      const data = localStorage.getItem(`@lp_whitelist_${userId}`)
+      return data ? JSON.parse(data) : []
+    } catch {
+      return []
+    }
+  },
+
+  setWhitelist: (userId: string | number, favorites: number[]): void => {
+    localStorage.setItem(`@lp_whitelist_${userId}`, JSON.stringify(favorites))
   }
 }

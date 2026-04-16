@@ -32,6 +32,14 @@ export default function App() {
 
     if (savedToken && savedUser) {
       dispatch(loginSuccess({ user: savedUser, token: savedToken }))
+      
+      // Multi-tenancy: Cargar el whitelist único de este usuario
+      const savedWhitelist = storage.getWhitelist(savedUser.id)
+      if (savedWhitelist.length > 0) {
+        import('@/store/slices/whitelistSlice').then(({ hydrateFavorites }) => {
+          dispatch(hydrateFavorites(savedWhitelist))
+        })
+      }
     }
 
     dispatch(finishSessionLoading())

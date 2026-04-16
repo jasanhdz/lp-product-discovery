@@ -8,5 +8,6 @@ export const APP_ROUTES = {
   HOME: '/',
   PRODUCTS: '/products',
   PRODUCT_DETAIL: '/products/:id',
-  DYNAMIC_FORM: '/products/new'
+  DYNAMIC_FORM: '/products/new',
+  WHITELIST: '/whitelist'
 }

@@ -3,10 +3,13 @@ import productsUiReducer from './slices/productsUiSlice'
 import sessionReducer from './slices/sessionSlice'
 import { rickAndMortyApi } from './api/rickAndMortyApi'
 
+import whitelistReducer from './slices/whitelistSlice'
+
 export const store = configureStore({
   reducer: {
     session: sessionReducer,
     productsUi: productsUiReducer,
+    whitelist: whitelistReducer,
     // Conectamos el reducer que maneja todo el caché interno de peticiones
     [rickAndMortyApi.reducerPath]: rickAndMortyApi.reducer
   },

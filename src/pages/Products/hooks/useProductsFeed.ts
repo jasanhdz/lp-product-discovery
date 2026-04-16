@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useCallback } from 'react'
+import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react'
 import { useGetCharactersQuery } from '@/store/api/rickAndMortyApi'
 import { Character } from '@/types/rickAndMorty'
 
@@ -14,18 +14,29 @@ export function useProductsFeed({ species, searchTerm, statusFilter }: UseProduc
   const [totalEntities, setTotalEntities] = useState<number>(0)
 
   // Mantenemos un debounce local aislado que no satura el estado Global de Redux
-  const [debouncedSearch, setDebouncedSearch] = useState<string>('')
+  // INICIALIZADO con searchTerm para evitar que borre/parpadee al volver de otra vista
+  const [debouncedSearch, setDebouncedSearch] = useState<string>(searchTerm)
 
   useEffect(() => {
-    const handler = setTimeout(() => setDebouncedSearch(searchTerm), 500)
-    return () => clearTimeout(handler)
-  }, [searchTerm])
+    // Si searchTerm cambia, aplicamos debounce de 500ms
+    if (searchTerm !== debouncedSearch) {
+      const handler = setTimeout(() => setDebouncedSearch(searchTerm), 500)
+      return () => clearTimeout(handler)
+    }
+  }, [searchTerm, debouncedSearch])
 
-  // Reset del feed total cuando los filtros globales obligan a purgar la memoria acumulada
+  // Generamos una firma para saber cuándo LOS FILTROS REALMENTE CAMBIARON (y no solo fue un re-render o regreso a la pestaña)
+  const filterSignature = useRef<string>(`${species}-${debouncedSearch}-${statusFilter}`)
+
+  // Reset del feed total SOLO si cambiamos de filtros de manera genuina
   useEffect(() => {
-    setPage(1)
-    setAllCharacters([])
-    setTotalEntities(0)
+    const currentSignature = `${species}-${debouncedSearch}-${statusFilter}`
+    if (filterSignature.current !== currentSignature) {
+      filterSignature.current = currentSignature
+      setPage(1)
+      setAllCharacters([])
+      setTotalEntities(0)
+    }
   }, [species, debouncedSearch, statusFilter])
 
   const queryResponse = useGetCharactersQuery({

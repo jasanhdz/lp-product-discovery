@@ -28,8 +28,20 @@ export const rickAndMortyApi = createApi({
     // Obtener un solo elemento (Actuará para nuestro Detalle de "Producto")
     getCharacterById: builder.query<Character, string | number>({
       query: (id) => `character/${id}`
+    }),
+
+    // Obtener varios especificamente por array de IDs (Para la Whitelist)
+    getMultipleCharactersByIds: builder.query<Character[], number[]>({
+      query: (ids) => `character/${ids.join(',')}`,
+      transformResponse: (response: Character | Character[]) => {
+        return Array.isArray(response) ? response : [response];
+      }
     })
   })
 })
 
-export const { useGetCharactersQuery, useGetCharacterByIdQuery } = rickAndMortyApi
+export const { 
+  useGetCharactersQuery, 
+  useGetCharacterByIdQuery,
+  useGetMultipleCharactersByIdsQuery
+} = rickAndMortyApi

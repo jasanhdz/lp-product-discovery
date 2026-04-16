@@ -5,6 +5,7 @@ import SignInPage from '@/pages/SignIn'
 import ProductsPage from '@/pages/Products'
 import ProductDetailPage from '@/pages/ProductDetail'
 import DynamicFormPage from '@/pages/DynamicForm'
+import WhitelistPage from '@/pages/Whitelist'
 
 export const publicRoutes: AppRoute[] = [
   {
@@ -26,6 +27,12 @@ export const privateRoutes: AppRoute[] = [
     title: 'Product Detail',
     path: APP_ROUTES.PRODUCT_DETAIL,
     component: ProductDetailPage,
+    layout: 'APP'
+  },
+  {
+    title: 'Whitelist',
+    path: APP_ROUTES.WHITELIST,
+    component: WhitelistPage,
     layout: 'APP'
   },
   {

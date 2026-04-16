@@ -23,6 +23,9 @@ import { setSpecies, setSearchTerm, setStatusFilter } from '@/store/slices/produ
 import { useProductsFeed } from './hooks/useProductsFeed';
 import { useObserverRecovery } from '@/hooks/useObserverRecovery';
 
+// Componentes
+import ProductCard from '@/components/ProductCard/ProductCard';
+
 export default function ProductsPage() {
   const dispatch = useDispatch();
   const { species, searchTerm, statusFilter } = useSelector((state) => state.productsUi);
@@ -161,9 +164,7 @@ export default function ProductsPage() {
           <Box className={styles.productGrid}>
             {/* 1. Mapeo Condicional */}
             {allCharacters.map((entity) => (
-              <Box key={entity.id} className={styles.productCard}>
-                <img src={entity.image} alt={entity.name} className={styles.productImage} />
-              </Box>
+              <ProductCard key={entity.id} entity={entity} />
             ))}
 
             {/* 2. Esqueletos Condicionales */}

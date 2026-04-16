@@ -1,0 +1,182 @@
+.pageWrapper {
+  box-sizing: border-box;
+  min-height: calc(100vh - 64px); /* Fallback height */
+  padding: 24px 5%;
+  background: radial-gradient(circle at 50% 0%, #151a25 0%, #0a0b10 100%);
+  color: #eaebed;
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 900px) {
+    height: calc(100vh - 64px); /* Explicit height subtracting Navbar approx 64px */
+    padding: 32px 5%;
+    overflow: hidden; /* Prevent body scroll on Desktop */
+  }
+}
+
+.topBar {
+  margin-bottom: 24px;
+  flex-shrink: 0;
+}
+
+.backBtn {
+  color: #97ce4c !important;
+  font-family: 'Space Mono', monospace !important;
+  letter-spacing: 0.1em !important;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+    background-color: rgba(151, 206, 76, 0.1) !important;
+  }
+}
+
+.cardPanel {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(17, 21, 28, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  flex-grow: 1; /* Fills remaining space */
+
+  @media (min-width: 900px) {
+    flex-direction: row;
+    height: calc(100vh - 120px); /* Strict height containment */
+    max-height: 800px;
+  }
+}
+
+.imageSection {
+  position: relative;
+  width: 100%;
+  height: 350px; /* Fixed height for Mobile */
+  flex-shrink: 0;
+
+  @media (min-width: 900px) {
+    width: 45%;
+    height: 100%; /* Full height of card on Desktop */
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .alienImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 15%; /* Keep face in view */
+  }
+}
+
+.whitelistOverlay {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.whitelistBtnActive {
+  color: #97ce4c !important;
+  filter: drop-shadow(0 0 6px rgba(151, 206, 76, 0.6));
+}
+
+.whitelistBtnInactive {
+  color: rgba(255, 255, 255, 0.5) !important;
+
+  &:hover {
+    color: #fff !important;
+  }
+}
+
+.infoSection {
+  padding: 32px 8%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+  overflow-y: auto; /* Allows scrolling inside right panel if content overflows */
+
+  @media (min-width: 900px) {
+    padding: 40px 6%;
+  }
+}
+
+.supertitle {
+  color: #97ce4c;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+}
+
+.alienName {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(2.5rem, 4.5vw, 4rem); /* Fluid and massive typography */
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 24px;
+  background: linear-gradient(90deg, #fff 0%, #a4b4cb 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.statusWrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.statusPill {
+  font-family: 'Space Mono', monospace !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #eaebed !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.divider {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  margin: 24px 0 32px !important;
+}
+
+.metadataGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.metaBox {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(151, 206, 76, 0.3);
+  }
+}
+
+.metaLabel {
+  color: rgba(234, 235, 237, 0.5);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.metaValue {
+  color: #eaebed;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  font-weight: 500;
+}
