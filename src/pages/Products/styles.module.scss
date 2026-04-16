@@ -1,0 +1,170 @@
+.pageContainer {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 2.5rem;
+}
+
+.searchBarGlobalWrapper {
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1.5rem 0;
+}
+
+.searchBarContainer {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.searchInput {
+  flex: 1;
+
+  :global(.MuiOutlinedInput-root) {
+    background: #151519 !important;
+    border-radius: 12px !important;
+    color: #eaf0fb !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+
+    :global(.MuiOutlinedInput-notchedOutline) {
+      border: none !important;
+    }
+  }
+
+  :global(.MuiInputBase-input) {
+    padding: 14px 20px !important;
+    font-size: 0.95rem;
+
+    &::placeholder {
+      color: rgba(234, 240, 251, 0.4) !important;
+      opacity: 1;
+    }
+  }
+}
+
+.searchIcon {
+  color: rgba(234, 240, 251, 0.4) !important;
+  margin-left: 8px;
+}
+
+.filtersGroup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filterLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(234, 240, 251, 0.5) !important;
+  font-family: 'Space Mono', monospace !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.speciesFormControl {
+  min-width: 160px;
+
+  :global(.MuiInputLabel-root) {
+    color: var(--green-portal) !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-weight: 700;
+    font-size: 0.85rem !important;
+  }
+
+  :global(.MuiOutlinedInput-root) {
+    border-radius: 8px !important;
+    color: #fff !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-size: 0.85rem !important;
+
+    :global(.MuiOutlinedInput-notchedOutline) {
+      border: 2px solid var(--green-portal) !important;
+    }
+  }
+
+  :global(.MuiSelect-icon) {
+    color: rgba(255, 255, 255, 0.4) !important;
+  }
+}
+
+.pillsGroup {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.pill {
+  height: 32px !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  border-radius: 20px !important;
+  border: 1px solid transparent !important;
+  padding-left: 2px !important;
+}
+
+.pillGreen {
+  background: rgba(151, 206, 76, 0.1) !important;
+  color: var(--green-portal) !important;
+  border-color: rgba(151, 206, 76, 0.4) !important;
+}
+
+.pillRed {
+  background: rgba(231, 76, 60, 0.1) !important;
+  color: #e74c3c !important;
+  border-color: rgba(231, 76, 60, 0.4) !important;
+}
+
+.pillYellow {
+  background: rgba(240, 225, 74, 0.1) !important;
+  color: var(--yellow-morty) !important;
+  border-color: rgba(240, 225, 74, 0.4) !important;
+}
+
+.cardDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-left: 8px;
+}
+
+.entitiesBadge {
+  background: rgba(0, 181, 204, 0.12);
+  color: var(--cyan-rick);
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 181, 204, 0.3);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.catalogHeader {
+  margin-bottom: 2rem;
+}
+
+.catalogTitle {
+  font-size: 1.8rem !important;
+  font-weight: 800 !important;
+  color: #fff !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.catalogSub {
+  font-family: 'Space Mono', monospace !important;
+  font-size: 0.75rem !important;
+  color: rgba(234, 240, 251, 0.4) !important;
+  letter-spacing: 0.05em;
+}

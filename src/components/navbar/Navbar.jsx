@@ -1,50 +1,54 @@
-import { AppBar, Toolbar, Typography, Button, Avatar, Box } from '@mui/material'
-import { Logout, RocketLaunch } from '@mui/icons-material'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { logout } from '@/store/slices/sessionSlice'
+import { AppBar, Toolbar, Box, Typography, Avatar, Button } from '@mui/material'
+import { RocketLaunch, Logout } from '@mui/icons-material'
 import styles from './Navbar.module.scss'
 
 export function Navbar() {
   const dispatch = useAppDispatch()
-  
-  // Leemos en vivo del estado global de Redux al usuario logueado
   const { user } = useAppSelector(state => state.session)
-
-  const handleLogout = () => {
-    // Al ejecutar este dispatch, Redux destruye el Session y AuthRoutes nos patea al SignIn :)
-    dispatch(logout())
-  }
 
   return (
     <AppBar position="sticky" elevation={0} className={styles.appBar}>
-      <Toolbar className={styles.toolbar}>
+      <Toolbar className={styles.toolbar} disableGutters>
         
-        {/* Marca/Logo */}
-        <Box display="flex" alignItems="center" gap={1}>
-          <RocketLaunch className={styles.iconLogo} />
-          <Typography variant="h6" component="div" fontWeight="800" sx={{ letterSpacing: '0.05em' }}>
-            DISCOVERY
-          </Typography>
+        {/* LOGO IZQUIERDO */}
+        <Box className={styles.logoGroup}>
+          <Box className={styles.logoIcon}>
+            <RocketLaunch sx={{ fontSize: '1.2rem' }} />
+          </Box>
+          <Box className={styles.logoWordmark}>
+            <Typography className={styles.logoTitle}>DESCUBRIMIENTO</Typography>
+            <Typography className={styles.logoSub}>Portal Ciudadela</Typography>
+          </Box>
         </Box>
 
-        {/* Perfil de Usuario y Logout */}
-        <Box display="flex" alignItems="center" gap={2}>
-          <Typography variant="body2" sx={{ opacity: 0.8, display: { xs: 'none', sm: 'block' } }}>
-            Misión activa, {user?.name || 'Piloto'}
+        {/* ESTATUS CENTRAL */}
+        <Box className={styles.missionBadge}>
+          <div className={styles.missionDot} />
+          Misión Activa
+        </Box>
+
+        {/* USUARIO DERECHO */}
+        <Box className={styles.rightGroup}>
+          <Typography className={styles.pilotName}>
+            {user?.name || 'Viajero'}
           </Typography>
           
-          <Avatar className={styles.avatar} src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.id}`} />
+          <Avatar 
+            className={styles.avatar} 
+            src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.id || 'alien'}`} 
+          />
           
           <Button 
-            color="inherit" 
-            onClick={handleLogout} 
-            startIcon={<Logout />}
+            onClick={() => dispatch(logout())}
+            startIcon={<Logout sx={{ fontSize: '1rem !important' }}/>}
             className={styles.logoutBtn}
           >
             Abortar
           </Button>
         </Box>
-        
+
       </Toolbar>
     </AppBar>
   )
