@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
-import productsReducer from './slices/productsSlice'
+import productsUiReducer from './slices/productsUiSlice'
 import sessionReducer from './slices/sessionSlice'
 import { rickAndMortyApi } from './api/rickAndMortyApi'
 
 export const store = configureStore({
   reducer: {
     session: sessionReducer,
-    products: productsReducer,
+    productsUi: productsUiReducer,
     // Conectamos el reducer que maneja todo el caché interno de peticiones
     [rickAndMortyApi.reducerPath]: rickAndMortyApi.reducer
   },
