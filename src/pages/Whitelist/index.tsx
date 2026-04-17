@@ -6,6 +6,7 @@ import { useGetMultipleCharactersByIdsQuery } from '@/store/api/rickAndMortyApi'
 import ProductCard from '@/components/ProductCard/ProductCard'
 import gridStyles from '@/pages/Products/styles.module.scss'
 import FavoriteIcon from '@mui/icons-material/Favorite'
+import SEO from '@/components/SEO'
 
 export default function WhitelistPage() {
   const favoriteIds = useSelector((state: RootState) => state.whitelist.favoriteIds)
@@ -27,6 +28,7 @@ export default function WhitelistPage() {
 
   return (
     <Box className={gridStyles.pageContainer}>
+      <SEO title="Favoritos de la Tripulación" description="Supervisa tu lista privada de entidades favoritas." />
       <Box className={gridStyles.catalogHeader}>
         <Typography className={gridStyles.catalogTitle}>Portafolio de Favoritos</Typography>
         <Typography className={gridStyles.catalogSub}>

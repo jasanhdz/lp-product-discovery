@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { toggleFavoriteThunk } from '@/store/slices/whitelistSlice'
 import { RootState, AppDispatch } from '@/store'
 import { useGetCharacterByIdQuery } from '@/store/api/rickAndMortyApi'
+import SEO from '@/components/SEO'
 import styles from './styles.module.scss'
 
 export default function ProductDetailPage() {
@@ -40,6 +41,12 @@ export default function ProductDetailPage() {
 
   return (
     <Box className={styles.pageWrapper}>
+      {character && (
+        <SEO 
+          title={character.name} 
+          description={`Expediente #${character.id}: ${character.species} del planeta ${character.origin?.name || 'Desconocido'}. Estado actual: ${character.status}.`}
+        />
+      )}
       {}
       <Box className={styles.topBar}>
         <Button startIcon={<ArrowBack />} onClick={() => navigate('/products')} className={styles.backBtn}>
