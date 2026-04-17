@@ -1,0 +1,49 @@
+[
+  {
+    "id": "1",
+    "type": "text",
+    "name": "missionName",
+    "label": "Nombre Clave de la Misión",
+    "placeholder": "ej. Operación Fénix",
+    "isMandarory": true
+  },
+  {
+    "id": "2",
+    "type": "select",
+    "name": "dimension",
+    "label": "Dimensión Objetivo",
+    "options": ["Dimensión C-137", "Dimensión Cronenberg", "Dimensión Licuadora", "Dimensión Fascista", "Dimensión Pizza", "Mega Gargantua"],
+    "isMandarory": true
+  },
+  {
+    "id": "3",
+    "type": "number",
+    "name": "crewSize",
+    "label": "Miembros de Tripulación Requeridos",
+    "placeholder": "3",
+    "isMandarory": false
+  },
+  {
+    "id": "4",
+    "type": "checkbox",
+    "name": "bringPortalGun",
+    "label": "¿Requiere Pistola de Portales?",
+    "isMandarory": false
+  },
+  {
+    "id": "5",
+    "type": "email",
+    "name": "commanderEmail",
+    "label": "Correo del Comandante en la Ciudadela",
+    "placeholder": "rick@citadel.org",
+    "isMandarory": true
+  },
+  {
+    "id": "6",
+    "type": "text",
+    "name": "specialEquipment",
+    "label": "Equipamiento Especial (Opcional)",
+    "placeholder": "Plumbus, Batería de Microverso...",
+    "isMandarory": false
+  }
+]

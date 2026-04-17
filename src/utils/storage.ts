@@ -24,9 +24,7 @@ export const storage = {
 
       const [header, payload, signature] = chunks
 
-      const validSignature = Base64Url.stringify(
-        hmacSHA256(`${header}.${payload}`, ENV.DUMMY_JWT_SIGNATURE)
-      )
+      const validSignature = Base64Url.stringify(hmacSHA256(`${header}.${payload}`, ENV.DUMMY_JWT_SIGNATURE))
 
       if (signature !== validSignature) {
         throw new Error('Alerta de Hackeo: Firma inválida detectada')

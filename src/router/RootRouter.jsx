@@ -8,9 +8,5 @@ export default function RootRoute() {
 
   if (isLoadingSession) return <LoaderPage />
 
-  return isLoggedIn ? (
-    <Navigate to={APP_ROUTES.PRODUCTS} replace />
-  ) : (
-    <Navigate to={AUTH_ROUTES.SIGN_IN} replace />
-  )
+  return isLoggedIn ? <Navigate to={APP_ROUTES.PRODUCTS} replace /> : <Navigate to={AUTH_ROUTES.SIGN_IN} replace />
 }

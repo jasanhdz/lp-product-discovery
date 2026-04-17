@@ -2,7 +2,7 @@
 
 :root {
   --bg-void: #0a0b10;
-  --bg-panel: rgba(255,255,255,0.03);
+  --bg-panel: rgba(255, 255, 255, 0.03);
   --green-portal: #97ce4c;
   --cyan-rick: #00b5cc;
   --yellow-morty: #f0e14a;
@@ -25,7 +25,7 @@ body {
   color: var(--text-primary);
   background-color: var(--bg-void);
   min-height: 100vh;
-  background-image: 
+  background-image:
     radial-gradient(ellipse at 15% 50%, rgba(0, 181, 204, 0.06) 0%, transparent 60%),
     radial-gradient(ellipse at 85% 20%, rgba(151, 206, 76, 0.05) 0%, transparent 50%);
   background-attachment: fixed;

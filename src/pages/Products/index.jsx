@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Box,
   Typography,
@@ -12,25 +12,17 @@ import {
   InputLabel,
   Skeleton,
   CircularProgress
-} from '@mui/material';
-import { Search, FilterList } from '@mui/icons-material';
-import styles from './styles.module.scss';
-
-// Redux Actions
-import { setSpecies, setSearchTerm, setStatusFilter } from '@/store/slices/productsUiSlice';
-
-// Custom Hooks Pro
-import { useProductsFeed } from './hooks/useProductsFeed';
-import { useObserverRecovery } from '@/hooks/useObserverRecovery';
-
-// Componentes
-import ProductCard from '@/components/ProductCard/ProductCard';
+} from '@mui/material'
+import { Search, FilterList } from '@mui/icons-material'
+import styles from './styles.module.scss'
+import { setSpecies, setSearchTerm, setStatusFilter } from '@/store/slices/productsUiSlice'
+import { useProductsFeed } from './hooks/useProductsFeed'
+import { useObserverRecovery } from '@/hooks/useObserverRecovery'
+import ProductCard from '@/components/ProductCard/ProductCard'
 
 export default function ProductsPage() {
-  const dispatch = useDispatch();
-  const { species, searchTerm, statusFilter } = useSelector((state) => state.productsUi);
-
-  // Hook de Datos de Negocio
+  const dispatch = useDispatch()
+  const { species, searchTerm, statusFilter } = useSelector((state) => state.productsUi)
   const {
     items: allCharacters,
     totalEntities,
@@ -39,29 +31,27 @@ export default function ProductsPage() {
     hasNext,
     loadNextPage,
     refetch
-  } = useProductsFeed({ species, searchTerm, statusFilter });
+  } = useProductsFeed({ species, searchTerm, statusFilter })
 
   const onIntersect = useCallback(() => {
-    loadNextPage();
-  }, [loadNextPage]);
-
-  // Hook Genérico de Observer
+    loadNextPage()
+  }, [loadNextPage])
   const { observerTarget, cooldown } = useObserverRecovery({
     isFetching,
     isError,
     hasNext,
     refetchAction: refetch,
     onIntersect
-  });
+  })
 
   return (
     <Box>
-      {/* SECONDARY NAVBAR (SEARCH & FILTERS) FULL WIDTH */}
+      {}
       <Box className={styles.searchBarGlobalWrapper}>
         <Box className={styles.searchBarContainer}>
           <TextField
             fullWidth
-            placeholder='Search across all dimensions...'
+            placeholder='Buscar en todas las dimensiones...'
             variant='outlined'
             className={styles.searchInput}
             value={searchTerm}
@@ -75,18 +65,18 @@ export default function ProductsPage() {
             }}
           />
 
-          {/* Filters Group */}
+          {}
           <Box className={styles.filtersGroup}>
             <Typography className={styles.filterLabel}>
-              <FilterList fontSize='small' /> FILTER:
+              <FilterList fontSize='small' /> FILTRO:
             </Typography>
 
             <FormControl className={styles.speciesFormControl}>
-              <InputLabel id='species-label'>Species</InputLabel>
+              <InputLabel id='species-label'>Especie</InputLabel>
               <Select
                 labelId='species-label'
                 value={species}
-                label='Species'
+                label='Especie'
                 onChange={(e) => dispatch(setSpecies(e.target.value))}
                 IconComponent={(props) => (
                   <svg
@@ -102,18 +92,18 @@ export default function ProductsPage() {
                   </svg>
                 )}
               >
-                <MenuItem value='all'>All Species</MenuItem>
-                <MenuItem value='Human'>Human</MenuItem>
-                <MenuItem value='Alien'>Alien</MenuItem>
+                <MenuItem value='all'>Todas las Especies</MenuItem>
+                <MenuItem value='Human'>Humano</MenuItem>
+                <MenuItem value='Alien'>Alienígena</MenuItem>
                 <MenuItem value='Robot'>Robot</MenuItem>
               </Select>
             </FormControl>
 
-            {/* Status Pills */}
+            {}
             <Box className={styles.pillsGroup}>
               <Chip
                 icon={<div className={styles.cardDot} style={{ backgroundColor: 'currentColor' }} />}
-                label='In Stock'
+                label='En Existencia'
                 onClick={() => dispatch(setStatusFilter('alive'))}
                 className={`${styles.pill} ${styles.pillGreen}`}
                 variant={statusFilter === 'alive' ? 'filled' : 'outlined'}
@@ -121,7 +111,7 @@ export default function ProductsPage() {
               />
               <Chip
                 icon={<div className={styles.cardDot} style={{ backgroundColor: 'currentColor' }} />}
-                label='Discontinued'
+                label='Descontinuado'
                 onClick={() => dispatch(setStatusFilter('dead'))}
                 className={`${styles.pill} ${styles.pillRed}`}
                 variant={statusFilter === 'dead' ? 'filled' : 'outlined'}
@@ -129,7 +119,7 @@ export default function ProductsPage() {
               />
               <Chip
                 icon={<div className={styles.cardDot} style={{ backgroundColor: 'currentColor' }} />}
-                label='Unknown'
+                label='Desconocido'
                 onClick={() => dispatch(setStatusFilter('unknown'))}
                 className={`${styles.pill} ${styles.pillYellow}`}
                 variant={statusFilter === 'unknown' ? 'filled' : 'outlined'}
@@ -137,37 +127,35 @@ export default function ProductsPage() {
               />
             </Box>
 
-            <Box className={styles.entitiesBadge}>{totalEntities} entities</Box>
+            <Box className={styles.entitiesBadge}>{totalEntities} entidades</Box>
           </Box>
         </Box>
       </Box>
 
-      {/* PAGE CONTENT */}
+      {}
       <Box className={styles.pageContainer}>
-        {/* CATALOG HEADER */}
+        {}
         <Box className={styles.catalogHeader}>
-          <Typography className={styles.catalogTitle}>Interdimensional Catalog</Typography>
-          <Typography className={styles.catalogSub}>
-            CITADEL_DB :: {totalEntities} ENTITIES FOUND
-          </Typography>
+          <Typography className={styles.catalogTitle}>Catálogo Interdimensional</Typography>
+          <Typography className={styles.catalogSub}>BASE CITADEL :: {totalEntities} ENTIDADES ENCONTRADAS</Typography>
         </Box>
 
-        {/* ALERTS DE ERROR */}
+        {}
         {isError && !isFetching && allCharacters.length === 0 && (
           <Typography color='error' textAlign='center' mt={4}>
-            Error querying Citadel DB. No results found.
+            Error leyendo Base Citadel. No se encontraron resultados.
           </Typography>
         )}
 
-        {/* RESULTS GRID */}
+        {}
         {(allCharacters.length > 0 || isFetching) && (
           <Box className={styles.productGrid}>
-            {/* 1. Mapeo Condicional */}
+            {}
             {allCharacters.map((entity) => (
               <ProductCard key={entity.id} entity={entity} />
             ))}
 
-            {/* 2. Esqueletos Condicionales */}
+            {}
             {isFetching &&
               Array.from(new Array(10)).map((_, i) => (
                 <Box key={`skeleton-${i}`} className={styles.productCard}>
@@ -183,17 +171,15 @@ export default function ProductsPage() {
           </Box>
         )}
 
-        {/* OBSERVER PERMANENTE */}
+        {}
         <Box ref={observerTarget} pt={8} pb={4} textAlign='center'>
           {cooldown > 0 ? (
             <Typography sx={{ color: '#ff4d4d', fontFamily: 'Space Mono, monospace', opacity: 0.8 }}>
-              [ RATE LIMIT DETECTED - RECONNECTING IN {cooldown}s ]
+              [ LÍMITE ALCANZADO - RECONECTANDO EN {cooldown}s ]
             </Typography>
           ) : isFetching ? (
-            <Typography
-              sx={{ color: 'rgba(234, 240, 251, 0.4)', fontFamily: 'Space Mono, monospace' }}
-            >
-              Scanning limits...
+            <Typography sx={{ color: 'rgba(234, 240, 251, 0.4)', fontFamily: 'Space Mono, monospace' }}>
+              Escaneando cuadrante...
             </Typography>
           ) : !hasNext && allCharacters.length > 0 ? (
             <Typography
@@ -204,13 +190,13 @@ export default function ProductsPage() {
                 letterSpacing: '0.1em'
               }}
             >
-              [ END OF DATABASE TRANSMISSION ]
+              [ FIN DE TRANSMISIÓN DE BASE DE DATOS ]
             </Typography>
           ) : null}
         </Box>
       </Box>
 
-      {/* PROGRESS HUD (Floating Tracker) */}
+      {}
       {totalEntities > 0 && (
         <Box
           sx={{
@@ -253,9 +239,9 @@ export default function ProductsPage() {
               }}
             />
           )}
-          {allCharacters.length} / {totalEntities} LOADED
+          {allCharacters.length} / {totalEntities} CARGADAS
         </Box>
       )}
     </Box>
-  );
+  )
 }

@@ -15,16 +15,7 @@ import {
   MenuItem,
   Alert
 } from '@mui/material'
-import {
-  Visibility,
-  VisibilityOff,
-  Email,
-  Lock,
-  Person,
-  Badge,
-  Public,
-  Pets
-} from '@mui/icons-material'
+import { Visibility, VisibilityOff, Email, Lock, Person, Badge, Public, Pets } from '@mui/icons-material'
 import styles from './styles.module.scss'
 
 const darkTheme = createTheme({
@@ -47,7 +38,16 @@ const DIMENSIONS = [
   'Pizza Dimension'
 ]
 
-const SPECIES_LIST = ['Human', 'Alien', 'Humanoid', 'Robot', 'Mythological Creature', 'Poopybutthole', 'Cronenberg', 'Unknown']
+const SPECIES_LIST = [
+  'Human',
+  'Alien',
+  'Humanoid',
+  'Robot',
+  'Mythological Creature',
+  'Poopybutthole',
+  'Cronenberg',
+  'Unknown'
+]
 
 export default function SignUpPage() {
   const dispatch = useAppDispatch()
@@ -57,8 +57,6 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
-
-  // If redirected from login with unregistered Google account
   useEffect(() => {
     if (searchParams.get('error') === 'unregistered') {
       setError('You need to register first. Use Google or email below to create your Portal Pass.')
@@ -86,7 +84,6 @@ export default function SignUpPage() {
     setError('')
 
     try {
-      // 1) Create auth user in Supabase
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: form.email,
         password: form.password
@@ -97,8 +94,6 @@ export default function SignUpPage() {
 
       const userId = authData.user.id
       const codename = form.alias || `${form.firstName} ${form.lastName}`
-
-      // 2) Upsert profile (trigger auto-creates a basic one, we overwrite with full data)
       const { error: profileError } = await supabase.from('profiles').upsert({
         id: userId,
         first_name: form.firstName,
@@ -112,11 +107,7 @@ export default function SignUpPage() {
       if (profileError) {
         console.error('Profile upsert error:', profileError)
       }
-
-      // 3) Get the real JWT session token
       const sessionToken = authData.session?.access_token || ''
-
-      // 4) Dispatch to Redux
       dispatch(
         loginSuccess({
           user: {
@@ -133,7 +124,7 @@ export default function SignUpPage() {
         })
       )
     } catch (err) {
-      const message = err?.message || 'Interdimensional registration failed'
+      const message = err?.message || 'Fallo en el registro interdimensional'
       setError(message)
     } finally {
       setIsLoading(false)
@@ -141,7 +132,6 @@ export default function SignUpPage() {
   }
 
   const handleGoogleSignUp = async () => {
-    // Flag so App.jsx knows this was a REGISTRATION (allow new users)
     localStorage.setItem('auth_intent', 'signup')
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -155,35 +145,37 @@ export default function SignUpPage() {
   return (
     <ThemeProvider theme={darkTheme}>
       <div className={styles.container}>
-        {/* ─── LEFT: Immersive Branding Panel (Desktop only) ─── */}
+        {}
         <div className={styles.brandPanel}>
           <div className={styles.brandContent}>
             <div className={styles.bigPortalRing}>🧬</div>
-            <div className={styles.brandTitle}>Join the Citadel</div>
+            <div className={styles.brandTitle}>Únete a la Ciudadela</div>
             <div className={styles.brandSubtitle}>
-              Interdimensional Registration
+              Registro Interdimensional
               <br />
-              Protocol v2.137
+              Protocolo v2.137
             </div>
             <div className={styles.brandDivider} />
-            <div className={styles.brandQuote}>"Nobody exists on purpose. Nobody belongs anywhere. Everybody's gonna die. Come watch TV."</div>
+            <div className={styles.brandQuote}>
+              "Nadie existe a propósito. Nadie pertenece a ninguna parte. Todos vamos a morir. Ven a ver la televisión."
+            </div>
           </div>
         </div>
 
-        {/* ─── RIGHT: Compact Form Panel ─── */}
+        {}
         <div className={styles.formPanel}>
           <div className={styles.formCard}>
-            {/* Mobile-only branding */}
+            {}
             <div className={styles.mobileHeader}>
               <div className={styles.portalRing}>🧬</div>
-              <div className={styles.mobileTitle}>Join the Citadel</div>
-              <div className={styles.mobileSubtitle}>Interdimensional Registration</div>
+              <div className={styles.mobileTitle}>Únete a la Ciudadela</div>
+              <div className={styles.mobileSubtitle}>Registro Interdimensional</div>
             </div>
 
-            {/* Desktop-only small title */}
+            {}
             <div className={styles.formHeader}>
-              <div className={styles.formTitle}>Create your Portal Pass</div>
-              <div className={styles.formSubtitle}>All fields required for dimensional clearance</div>
+              <div className={styles.formTitle}>Crea tu Pase de Portal</div>
+              <div className={styles.formSubtitle}>Todos los campos son requeridos para autorización dimensional</div>
             </div>
 
             {error && (
@@ -204,12 +196,12 @@ export default function SignUpPage() {
             )}
 
             <Box component='form' onSubmit={handleRegister} className={styles.formGroup}>
-              {/* Row 1: First Name + Last Name */}
+              {}
               <div className={styles.fieldRow}>
                 <TextField
                   fullWidth
                   variant='outlined'
-                  label='First Name'
+                  label='Nombre'
                   value={form.firstName}
                   onChange={handleChange('firstName')}
                   required
@@ -225,7 +217,7 @@ export default function SignUpPage() {
                 <TextField
                   fullWidth
                   variant='outlined'
-                  label='Last Name'
+                  label='Apellido'
                   value={form.lastName}
                   onChange={handleChange('lastName')}
                   required
@@ -240,12 +232,12 @@ export default function SignUpPage() {
                 />
               </div>
 
-              {/* Row 2: Alias + Email */}
+              {}
               <div className={styles.fieldRow}>
                 <TextField
                   fullWidth
                   variant='outlined'
-                  label='Codename'
+                  label='Nombre Clave'
                   placeholder='Pickle Rick...'
                   value={form.alias}
                   onChange={handleChange('alias')}
@@ -261,7 +253,7 @@ export default function SignUpPage() {
                 <TextField
                   fullWidth
                   variant='outlined'
-                  label='Email'
+                  label='Correo'
                   value={form.email}
                   onChange={handleChange('email')}
                   required
@@ -276,13 +268,13 @@ export default function SignUpPage() {
                 />
               </div>
 
-              {/* Row 3: Species + Dimension */}
+              {}
               <div className={styles.fieldRow}>
                 <TextField
                   fullWidth
                   select
                   variant='outlined'
-                  label='Species'
+                  label='Especie'
                   value={form.species}
                   onChange={handleChange('species')}
                   required
@@ -306,7 +298,7 @@ export default function SignUpPage() {
                   fullWidth
                   select
                   variant='outlined'
-                  label='Dimension'
+                  label='Dimensión'
                   value={form.dimension}
                   onChange={handleChange('dimension')}
                   required
@@ -327,12 +319,12 @@ export default function SignUpPage() {
                 </TextField>
               </div>
 
-              {/* Row 4: Password */}
+              {}
               <TextField
                 fullWidth
                 variant='outlined'
                 type={showPassword ? 'text' : 'password'}
-                label='Access Code'
+                label='Código de Acceso'
                 value={form.password}
                 onChange={handleChange('password')}
                 required
@@ -345,7 +337,11 @@ export default function SignUpPage() {
                   ),
                   endAdornment: (
                     <InputAdornment position='end'>
-                      <IconButton onClick={() => setShowPassword(!showPassword)} edge='end' sx={{ color: 'rgba(255,255,255,0.3)' }}>
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge='end'
+                        sx={{ color: 'rgba(255,255,255,0.3)' }}
+                      >
                         {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
@@ -357,22 +353,22 @@ export default function SignUpPage() {
                 {isLoading ? (
                   <span className={styles.loadingText}>
                     <CircularProgress size={20} sx={{ color: '#0a0b10' }} />
-                    Calibrating Portal Gun...
+                    Calibrando Pistola de Portales...
                   </span>
                 ) : (
-                  'CREATE PORTAL PASS'
+                  'CREAR PASE DE PORTAL'
                 )}
               </Button>
             </Box>
 
-            {/* Divider */}
+            {}
             <div className={styles.dividerRow}>
               <div className={styles.dividerLine} />
-              <span className={styles.dividerText}>OR</span>
+              <span className={styles.dividerText}>O</span>
               <div className={styles.dividerLine} />
             </div>
 
-            {/* Google OAuth */}
+            {}
             <Button
               fullWidth
               variant='outlined'
@@ -399,13 +395,13 @@ export default function SignUpPage() {
                 </svg>
               }
             >
-              Continue with Google
+              Continuar con Google
             </Button>
 
             <div className={styles.footerLink}>
-              <span>Already have a Portal Pass?</span>
+              <span>¿Ya tienes un Pase de Portal?</span>
               <button type='button' onClick={() => navigate('/auth/sign-in')}>
-                Sign In
+                Iniciar Sesión
               </button>
             </div>
           </div>

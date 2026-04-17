@@ -23,7 +23,6 @@ export const productsSlice = createSlice({
       state.searchTerm = action.payload
     },
     setStatusFilter: (state, action: PayloadAction<string>) => {
-      // Toggle logic inside reducers avoids having to pass specific 'prev' states across apps!
       state.statusFilter = state.statusFilter === action.payload ? '' : action.payload
     },
     resetFilters: (state) => {

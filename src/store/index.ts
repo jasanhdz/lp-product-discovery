@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import productsUiReducer from './slices/productsUiSlice'
 import sessionReducer from './slices/sessionSlice'
 import { rickAndMortyApi } from './api/rickAndMortyApi'
+import { formApi } from './api/formApi'
 
 import whitelistReducer from './slices/whitelistSlice'
 
@@ -10,12 +11,11 @@ export const store = configureStore({
     session: sessionReducer,
     productsUi: productsUiReducer,
     whitelist: whitelistReducer,
-    // Conectamos el reducer que maneja todo el caché interno de peticiones
-    [rickAndMortyApi.reducerPath]: rickAndMortyApi.reducer
+    [rickAndMortyApi.reducerPath]: rickAndMortyApi.reducer,
+    [formApi.reducerPath]: formApi.reducer
   },
-  // Inyectamos el middleware de RTK Query.
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(rickAndMortyApi.middleware)
+    getDefaultMiddleware().concat(rickAndMortyApi.middleware).concat(formApi.middleware)
 })
 
 export type RootState = ReturnType<typeof store.getState>

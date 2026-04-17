@@ -12,23 +12,15 @@ export function useProductsFeed({ species, searchTerm, statusFilter }: UseProduc
   const [page, setPage] = useState<number>(1)
   const [allCharacters, setAllCharacters] = useState<Character[]>([])
   const [totalEntities, setTotalEntities] = useState<number>(0)
-
-  // Mantenemos un debounce local aislado que no satura el estado Global de Redux
-  // INICIALIZADO con searchTerm para evitar que borre/parpadee al volver de otra vista
   const [debouncedSearch, setDebouncedSearch] = useState<string>(searchTerm)
 
   useEffect(() => {
-    // Si searchTerm cambia, aplicamos debounce de 500ms
     if (searchTerm !== debouncedSearch) {
       const handler = setTimeout(() => setDebouncedSearch(searchTerm), 500)
       return () => clearTimeout(handler)
     }
   }, [searchTerm, debouncedSearch])
-
-  // Generamos una firma para saber cuándo LOS FILTROS REALMENTE CAMBIARON (y no solo fue un re-render o regreso a la pestaña)
   const filterSignature = useRef<string>(`${species}-${debouncedSearch}-${statusFilter}`)
-
-  // Reset del feed total SOLO si cambiamos de filtros de manera genuina
   useEffect(() => {
     const currentSignature = `${species}-${debouncedSearch}-${statusFilter}`
     if (filterSignature.current !== currentSignature) {
@@ -53,8 +45,6 @@ export function useProductsFeed({ species, searchTerm, statusFilter }: UseProduc
       setTotalEntities(charactersRequest.info.count)
     }
   }, [charactersRequest])
-
-  // Inyección Inmediata de Mutaciones (Evita Layout Shifts y Jumps al remover los esqueletos)
   useLayoutEffect(() => {
     if (charactersRequest?.results) {
       if (page === 1) {
@@ -62,9 +52,7 @@ export function useProductsFeed({ species, searchTerm, statusFilter }: UseProduc
       } else {
         setAllCharacters((prev) => {
           const existingIds = new Set(prev.map((c) => c.id))
-          const newItems = charactersRequest.results.filter(
-            (c) => !existingIds.has(c.id)
-          ) as Character[]
+          const newItems = charactersRequest.results.filter((c) => !existingIds.has(c.id)) as Character[]
           return [...prev, ...newItems]
         })
       }

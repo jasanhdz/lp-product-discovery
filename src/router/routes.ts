@@ -5,7 +5,7 @@ import SignInPage from '@/pages/SignIn'
 import SignUpPage from '@/pages/SignUp'
 import ProductsPage from '@/pages/Products'
 import ProductDetailPage from '@/pages/ProductDetail'
-import DynamicFormPage from '@/pages/DynamicForm'
+import DynamicFormPage from '@/pages/MissionBriefing'
 import WhitelistPage from '@/pages/Whitelist'
 
 export const publicRoutes: AppRoute[] = [

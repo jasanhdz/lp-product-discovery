@@ -4,15 +4,11 @@ import { Box, Typography, Skeleton } from '@mui/material'
 import { RootState } from '@/store'
 import { useGetMultipleCharactersByIdsQuery } from '@/store/api/rickAndMortyApi'
 import ProductCard from '@/components/ProductCard/ProductCard'
-
-// Reutilizamos los mismos estilos globales del layout de Products
 import gridStyles from '@/pages/Products/styles.module.scss'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 
 export default function WhitelistPage() {
   const favoriteIds = useSelector((state: RootState) => state.whitelist.favoriteIds)
-
-  // Skip query if no favorites selected to avoid API errors passing empty paths
   const shouldFetch = favoriteIds.length > 0
 
   const {
@@ -22,35 +18,33 @@ export default function WhitelistPage() {
   } = useGetMultipleCharactersByIdsQuery(favoriteIds, {
     skip: !shouldFetch
   })
-
-  // Ordenar los resultados para que respeten estrictamente el orden en que el usuario los seleccionó
   const sortedCharacters = React.useMemo(() => {
-    if (!favoritedCharacters) return [];
-    
-    // El API siempre devuelve en orden ascendente de IDs, así que forzamos
-    // a reordenar basado en nuestro index del array en persistencia
+    if (!favoritedCharacters) return []
     return [...favoritedCharacters].sort((a, b) => {
-      return favoriteIds.indexOf(a.id) - favoriteIds.indexOf(b.id);
-    });
-  }, [favoritedCharacters, favoriteIds]);
+      return favoriteIds.indexOf(a.id) - favoriteIds.indexOf(b.id)
+    })
+  }, [favoritedCharacters, favoriteIds])
 
   return (
     <Box className={gridStyles.pageContainer}>
       <Box className={gridStyles.catalogHeader}>
-        <Typography className={gridStyles.catalogTitle}>Whitelist Portfolio</Typography>
+        <Typography className={gridStyles.catalogTitle}>Portafolio de Favoritos</Typography>
         <Typography className={gridStyles.catalogSub}>
-          {favoriteIds.length} {favoriteIds.length === 1 ? 'ENTITY' : 'ENTITIES'} FAVORITED
+          {favoriteIds.length} {favoriteIds.length === 1 ? 'ENTIDAD' : 'ENTIDADES'} GUARDADA
+          {favoriteIds.length === 1 ? '' : 'S'}
         </Typography>
       </Box>
 
       {!shouldFetch ? (
         <Box textAlign='center' pt={10} pb={20}>
           <FavoriteIcon sx={{ fontSize: 60, color: 'rgba(255,255,255,0.05)', mb: 2 }} />
-          <Typography sx={{ color: 'rgba(234, 240, 251, 0.4)', fontFamily: 'Space Mono, monospace' }}>YOUR WHITELIST IS EMPTY</Typography>
+          <Typography sx={{ color: 'rgba(234, 240, 251, 0.4)', fontFamily: 'Space Mono, monospace' }}>
+            TU LISTA DE FAVORITOS ESTÁ VACÍA
+          </Typography>
         </Box>
       ) : isError ? (
         <Box textAlign='center' pt={10}>
-          <Typography color='error'>Signal Lost. Failed to fetch favorited entities.</Typography>
+          <Typography color='error'>Señal Interrumpida. Fallo al cargar entidades guardadas.</Typography>
         </Box>
       ) : (
         <Box className={gridStyles.productGrid}>

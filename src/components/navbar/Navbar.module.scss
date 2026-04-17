@@ -3,7 +3,7 @@
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   border-bottom: 1px solid var(--border-glass) !important;
-  box-shadow: 0 4px 30px rgba(0,0,0,0.5) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5) !important;
 }
 
 .toolbar {
@@ -87,8 +87,13 @@
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
 }
 
 /* SECCIÓN DERECHA */

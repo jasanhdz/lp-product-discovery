@@ -9,7 +9,6 @@ export const rickAndMortyApi = createApi({
   }),
 
   endpoints: (builder) => ({
-    // Obtener lista completa (Actuará como nuestro buscador de "productos")
     getCharacters: builder.query<CharactersResponse, CharacterFilters | void>({
       query: (filters) => {
         if (!filters) return 'character'
@@ -24,24 +23,16 @@ export const rickAndMortyApi = createApi({
         return queryString ? `character/?${queryString}` : 'character'
       }
     }),
-
-    // Obtener un solo elemento (Actuará para nuestro Detalle de "Producto")
     getCharacterById: builder.query<Character, string | number>({
       query: (id) => `character/${id}`
     }),
-
-    // Obtener varios especificamente por array de IDs (Para la Whitelist)
     getMultipleCharactersByIds: builder.query<Character[], number[]>({
       query: (ids) => `character/${ids.join(',')}`,
       transformResponse: (response: Character | Character[]) => {
-        return Array.isArray(response) ? response : [response];
+        return Array.isArray(response) ? response : [response]
       }
     })
   })
 })
 
-export const { 
-  useGetCharactersQuery, 
-  useGetCharacterByIdQuery,
-  useGetMultipleCharactersByIdsQuery
-} = rickAndMortyApi
+export const { useGetCharactersQuery, useGetCharacterByIdQuery, useGetMultipleCharactersByIdsQuery } = rickAndMortyApi

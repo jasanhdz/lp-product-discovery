@@ -1,8 +1,3 @@
-/**
- * DTOs (Data Transfer Objects) and Common Interfaces
- * Core domain objects shared across the whole app.
- */
-
 export interface Character {
   id: number
   name: string

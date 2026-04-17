@@ -14,9 +14,7 @@ export default function PrivateRouter({ children }) {
   return isLoggedIn ? (
     <div className={styles.appLayout}>
       <Navbar />
-      <main className={styles.mainContent}>
-        {children}
-      </main>
+      <main className={styles.mainContent}>{children}</main>
     </div>
   ) : (
     <Navigate to={AUTH_ROUTES.SIGN_IN} replace />

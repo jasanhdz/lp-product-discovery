@@ -9,8 +9,6 @@ interface WhitelistState {
 const initialState: WhitelistState = {
   favoriteIds: []
 }
-
-// Thunk: Toggle favorite with Supabase persistence (optimistic update)
 export const toggleFavoriteThunk = createAsyncThunk(
   'whitelist/toggleFavoriteThunk',
   async (characterId: number, { getState, dispatch }) => {
@@ -20,13 +18,10 @@ export const toggleFavoriteThunk = createAsyncThunk(
     if (!user) return
 
     const isFavorite = state.whitelist.favoriteIds.includes(characterId)
-
-    // 1) Optimistic UI update (instant feedback)
     dispatch(whitelistSlice.actions.toggleFavorite(characterId))
 
     try {
       if (isFavorite) {
-        // Remove from Supabase
         const { error } = await supabase
           .from('whitelist')
           .delete()
@@ -35,22 +30,16 @@ export const toggleFavoriteThunk = createAsyncThunk(
 
         if (error) throw error
       } else {
-        // Add to Supabase
-        const { error } = await supabase
-          .from('whitelist')
-          .insert({ user_id: user.id, character_id: characterId })
+        const { error } = await supabase.from('whitelist').insert({ user_id: user.id, character_id: characterId })
 
         if (error) throw error
       }
     } catch (err) {
-      // Rollback optimistic update on failure
       console.error('Whitelist sync failed, rolling back:', err)
       dispatch(whitelistSlice.actions.toggleFavorite(characterId))
     }
   }
 )
-
-// Thunk: Load the full whitelist from Supabase on session start
 export const loadWhitelistThunk = createAsyncThunk(
   'whitelist/loadWhitelistThunk',
   async (userId: string, { dispatch }) => {
@@ -78,7 +67,7 @@ export const whitelistSlice = createSlice({
     toggleFavorite: (state, action: PayloadAction<number>) => {
       const id = action.payload
       if (state.favoriteIds.includes(id)) {
-        state.favoriteIds = state.favoriteIds.filter(fId => fId !== id)
+        state.favoriteIds = state.favoriteIds.filter((fId) => fId !== id)
       } else {
         state.favoriteIds.push(id)
       }
