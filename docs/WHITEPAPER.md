@@ -17,6 +17,12 @@ Basándome en mis patrones de experiencia directos, realicé la configuración d
 ### Mock de API para Formulario Dinámico (Resiliencia)
 Durante la fase técnica, intenté integrar el endpoint del formulario proporcionado en la prueba (*dummyjson.com/c/e357-8ef8...*), sin embargo, dicho entorno se encontraba caído y no retornaba respuestas viables. En lugar de permitir que esto se convirtiera en un bloqueante, **decidí construir y servir mi propio Mock API** (simulación JSON a través de los estáticos locales de Webpack). Esto me garantizó cumplir al 100% el requerimiento de orquestar un "Schema-Driven UI" (Formularios Dinámicos construidos a tiempo de ejecución leyendo JSON puro validando obligatoriedades) sin depender de agentes inestables de terceros.
 
+### Hibridación Estratégica (TypeScript + JavaScript)
+Aposté por una arquitectura híbrida donde **TypeScript** dictamina toda la lógica de negocio (Slices de Redux, Endpoints, Hooks asíncronos y Modelos de datos), garantizando un tipado estricto y seguro en las tuberías de información. Como contraparte, utilicé **JavaScript (JSX)** nativo en los componentes puramente visuales, lo que acelera la iteración de la Interfaz de Usuario y reduce el exceso de verbosidad donde no es drásticamente necesaria.
+
+### SEO Dinámico y Metadatos (React Helmet)
+Para potenciar la indexación y la compartición de enlaces (Open Graph), implementé un sistema de "Head" reactivo. Utilicé `react-helmet-async` para inyectar metadatos dinámicos, de manera que cada monstruo o alienígena en su vista de `ProductDetail` actualiza programáticamente el título del navegador y su meta-descripción en base a los atributos locales de su especie y estatus.
+
 ### Integración de Backend con Supabase
 Elegí agregar **Supabase** (Postgres + Auth + OAuth) como Backend-as-a-Service porque tengo una amplia y profunda experiencia profesional operándolo. La facilidad y seguridad que proporciona me permitió dotar al proyecto de un *feeling* completamente **real y premium**; los usuarios de esta prueba pueden crear cuentas en un entorno verídico de bases de datos o logearse instantáneamente con Google, superando con creces la experiencia de una simple persistencia falsa con `localStorage`.
 
