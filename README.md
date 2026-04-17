@@ -7,6 +7,12 @@ Este repositorio aloja la solución técnica de frontend al reto planteado. La p
 ## Enlaces e Información Obligatoria
 
 - **Repositorio de GitHub**: [https://github.com/jasanhernandez/lp-product-discovery](https://github.com/jasanhernandez/lp-product-discovery)
+- **Despliegue de Producción (Vercel)**: [https://lp-product-discovery.vercel.app](https://lp-product-discovery.vercel.app/)
+
+### Permisos Otorgados (Evaluadores)
+Se ha extendido el acceso a este repositorio a los correos obligatorios:
+- `daalvaradol@liverpool.com.mx`
+- `dteofilom@liverpool.com.mx`
 
 ---
 
