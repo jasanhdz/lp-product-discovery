@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { logout } from '@/store/slices/sessionSlice'
+import { clearFavorites } from '@/store/slices/whitelistSlice'
 import { AppBar, Toolbar, Box, Typography, Avatar, Button } from '@mui/material'
 import { RocketLaunch, Logout, Favorite } from '@mui/icons-material'
 import styles from './Navbar.module.scss'
@@ -14,7 +15,34 @@ export function Navbar() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
+    dispatch(clearFavorites())
     dispatch(logout())
+  }
+
+  const getAvatarUrl = () => {
+    if (user?.avatar_url) return user.avatar_url;
+
+    const seed = user?.id || 'alien';
+    const species = (user?.species || '').toLowerCase();
+
+    // Human variations
+    if (species === 'human' || species === 'humanoid') {
+      return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}`;
+    }
+    // Robot
+    if (species === 'robot') {
+      return `https://api.dicebear.com/7.x/bottts/svg?seed=${seed}`;
+    }
+    // Mythological / unknown / alien etc
+    if (species.includes('mythological')) {
+      return `https://api.dicebear.com/7.x/adventurer/svg?seed=${seed}`;
+    }
+    if (species === 'cronenberg') {
+      return `https://api.dicebear.com/7.x/croodles/svg?seed=${seed}`;
+    }
+    
+    // Default Alien fallback
+    return `https://api.dicebear.com/7.x/big-ears/svg?seed=${seed}`;
   }
 
   return (
@@ -66,7 +94,7 @@ export function Navbar() {
           
           <Avatar 
             className={styles.avatar} 
-            src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.id || 'alien'}`} 
+            src={getAvatarUrl()} 
           />
           
           <Button 

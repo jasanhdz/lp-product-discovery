@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppDispatch } from '@/store/hooks'
 import { loginSuccess } from '@/store/slices/sessionSlice'
+import { loadWhitelistThunk } from '@/store/slices/whitelistSlice'
 import { supabase } from '@/lib/supabase'
 import { Box, TextField, Button, InputAdornment, IconButton, ThemeProvider, createTheme, CircularProgress, Alert } from '@mui/material'
 import { Visibility, VisibilityOff, Email, Lock } from '@mui/icons-material'
@@ -58,11 +59,15 @@ export default function SignInPage() {
             last_name: profile?.last_name || '',
             alias: profile?.alias || '',
             species: profile?.species || '',
-            home_dimension: profile?.home_dimension || ''
+            home_dimension: profile?.home_dimension || '',
+            avatar_url: authData.user.user_metadata?.avatar_url || ''
           },
           token: sessionToken
         })
       )
+
+      // 4) Load whitelist from Supabase (no page reload on email login)
+      dispatch(loadWhitelistThunk(userId))
     } catch (err) {
       const message = err?.message || 'Portal authentication failed'
       setError(message === 'Invalid login credentials' ? 'Invalid credentials. Check your email and access code.' : message)

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '@/store'
-import { storage } from '@/utils/storage'
+import { supabase } from '@/lib/supabase'
 
 interface WhitelistState {
   favoriteIds: number[]
@@ -10,21 +10,64 @@ const initialState: WhitelistState = {
   favoriteIds: []
 }
 
-// Thunk to handle multi-tenancy LocalStorage persistence safely
+// Thunk: Toggle favorite with Supabase persistence (optimistic update)
 export const toggleFavoriteThunk = createAsyncThunk(
   'whitelist/toggleFavoriteThunk',
   async (characterId: number, { getState, dispatch }) => {
     const state = getState() as RootState
     const user = state.session.user
-    
-    if (!user) return // No user, don't save to storage
 
-    // Modify local state first (Optimistic update)
+    if (!user) return
+
+    const isFavorite = state.whitelist.favoriteIds.includes(characterId)
+
+    // 1) Optimistic UI update (instant feedback)
     dispatch(whitelistSlice.actions.toggleFavorite(characterId))
-    
-    // Save to LocalStorage scoped by User ID
-    const newState = getState() as RootState
-    storage.setWhitelist(user.id, newState.whitelist.favoriteIds)
+
+    try {
+      if (isFavorite) {
+        // Remove from Supabase
+        const { error } = await supabase
+          .from('whitelist')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('character_id', characterId)
+
+        if (error) throw error
+      } else {
+        // Add to Supabase
+        const { error } = await supabase
+          .from('whitelist')
+          .insert({ user_id: user.id, character_id: characterId })
+
+        if (error) throw error
+      }
+    } catch (err) {
+      // Rollback optimistic update on failure
+      console.error('Whitelist sync failed, rolling back:', err)
+      dispatch(whitelistSlice.actions.toggleFavorite(characterId))
+    }
+  }
+)
+
+// Thunk: Load the full whitelist from Supabase on session start
+export const loadWhitelistThunk = createAsyncThunk(
+  'whitelist/loadWhitelistThunk',
+  async (userId: string, { dispatch }) => {
+    try {
+      const { data, error } = await supabase
+        .from('whitelist')
+        .select('character_id')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: true })
+
+      if (error) throw error
+
+      const ids = (data || []).map((row: { character_id: number }) => row.character_id)
+      dispatch(whitelistSlice.actions.hydrateFavorites(ids))
+    } catch (err) {
+      console.error('Failed to load whitelist from Supabase:', err)
+    }
   }
 )
 
@@ -42,9 +85,12 @@ export const whitelistSlice = createSlice({
     },
     hydrateFavorites: (state, action: PayloadAction<number[]>) => {
       state.favoriteIds = action.payload
+    },
+    clearFavorites: (state) => {
+      state.favoriteIds = []
     }
   }
 })
 
-export const { toggleFavorite, hydrateFavorites } = whitelistSlice.actions
+export const { toggleFavorite, hydrateFavorites, clearFavorites } = whitelistSlice.actions
 export default whitelistSlice.reducer

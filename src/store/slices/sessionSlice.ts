@@ -14,6 +14,7 @@ export interface User {
   alias?: string
   species?: string
   home_dimension?: string
+  avatar_url?: string
 }
 
 // Estructura completa de este "Slice" de autenticación.

@@ -5,7 +5,7 @@ import LoaderPage from './pages/Loader'
 import { useAppDispatch } from '@/store/hooks'
 import { finishSessionLoading, loginSuccess } from '@/store/slices/sessionSlice'
 import { supabase } from '@/lib/supabase'
-import { storage } from '@/utils/storage'
+import { loadWhitelistThunk } from '@/store/slices/whitelistSlice'
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'
 
 const darkTheme = createTheme({
@@ -48,16 +48,20 @@ export default function App() {
           const authIntent = localStorage.getItem('auth_intent')
           localStorage.removeItem('auth_intent') // Clean up flag
 
-          // If user clicked Google on the LOGIN page but has no real profile
-          // (trigger auto-created a skeleton with no species/alias), reject them
-          const isNewUser = !profile?.species || profile.species === 'Human' && !profile?.alias && !profile?.last_name
-          
-          if (authIntent === 'signin' && isNewUser) {
-            // This user hasn't registered properly — kick them out
-            await supabase.auth.signOut()
-            // Redirect to signup with error message via URL param
-            window.location.href = '/auth/sign-up?error=unregistered'
-            return
+          if (authIntent === 'signin') {
+            // Check if this user JUST got created by the trigger (within last 15 seconds)
+            // If so, they're brand new and haven't registered via SignUp
+            const profileAge = profile?.created_at
+              ? (Date.now() - new Date(profile.created_at).getTime()) / 1000
+              : 0
+
+            if (profileAge < 15) {
+              // This user hasn't registered properly — kick them out
+              await supabase.auth.signOut()
+              window.location.href = '/auth/sign-up?error=unregistered'
+              return
+            }
+            // If profile is older than 15 seconds, they registered before → allow login
           }
 
           const displayName = profile?.alias || profile?.first_name || email.split('@')[0]
@@ -73,19 +77,15 @@ export default function App() {
                 last_name: profile?.last_name || '',
                 alias: profile?.alias || '',
                 species: profile?.species || '',
-                home_dimension: profile?.home_dimension || ''
+                home_dimension: profile?.home_dimension || '',
+                avatar_url: session.user.user_metadata?.avatar_url || ''
               },
               token: session.access_token
             })
           )
 
-          // 5) Hydrate whitelist for this specific user
-          const savedWhitelist = storage.getWhitelist(userId)
-          if (savedWhitelist.length > 0) {
-            import('@/store/slices/whitelistSlice').then(({ hydrateFavorites }) => {
-              dispatch(hydrateFavorites(savedWhitelist))
-            })
-          }
+          // 5) Hydrate whitelist from Supabase
+          dispatch(loadWhitelistThunk(userId))
         }
       } catch (err) {
         console.warn('Session recovery failed:', err)
