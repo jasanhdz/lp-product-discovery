@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import {
-  Box,
   TextField,
   Button,
   CircularProgress,
@@ -10,11 +9,9 @@ import {
   FormControlLabel,
   Snackbar
 } from '@mui/material'
-import { Navbar } from '@/components/navbar/Navbar'
 import styles from './styles.module.scss'
 
 import { useGetDynamicFormSchemaQuery } from '@/store/api/formApi'
-import { FALLBACK_FORM_SCHEMA } from '@/constants/citadel'
 
 export default function MissionBriefingPage() {
   const { data: formStructure, error: apiError, isLoading } = useGetDynamicFormSchemaQuery()
