@@ -1,30 +1,28 @@
-# Whitepaper Arquitectónico: LP Product Discovery & Citadel Auth
+# Whitepaper Arquitectónico: LP Product Discovery
 
-## Introducción
-Este documento detalla las decisiones técnicas y arquitectónicas que tomé durante el diseño y construcción del proyecto **LP Product Discovery**. Elegí dotar a la aplicación de un hilo conductor conceptual—la "Ciudadela" de Rick & Morty—para ir un paso más allá de los requisitos estándar, creando un sistema robusto, escalable e inmersivo. El reto nos exige un alto nivel de control del DOM y asincronía, y he abordado cada requerimiento pensando en un ciclo de vida propio de aplicaciones tipo "enterprise".
+## 1. Introducción y Visión General
+Este documento expone las decisiones técnicas, patrones de diseño y justificaciones arquitectónicas que apliqué durante la construcción del proyecto **LP Product Discovery** (bajo la temática inmersiva de la "Ciudadela" de Rick & Morty). Abordé esta prueba integrando prácticas de grado empresarial, demostrando perfilamiento en el Front-End y garantizando una escalabilidad absoluta desde el día cero.
 
-## Pila Tecnológica & Decisiones Core
+## 2. Decisiones Arquitectónicas y Herramientas
 
-Para demostrar mi dominio fundamental de las herramientas y evitar la dependencia forzada de "cajas negras" como Next.js o los andamiajes pre-hechos de Vite, decidí estructurar el proyecto utilizando configuraciones explícitas:
+### Empleo de Webpack 5 sobre Vite/CRA
+Decidí prescindir intencionalmente de frameworks automáticos o empaquetadores exprés (como Vite o Next.js). Construí e integré el entorno de **Webpack 5 + Babel** totalmente desde cero. Esta decisión no fue por falta de familiaridad con herramientas rápidas, sino con el objetivo explícito de **demostrar mis habilidades sólidas en minificación, manejo de AST, personalización total del proceso de desarrollo y fine-tuning del empaquetador**. Al dominar Webpack, logré inyectar plugins para extracción de CSS (`MiniCssExtractPlugin`), controlar los entornos con `dotenv-webpack` y manipular directamente la partición de módulos (*chunking*).
 
-- **React 19 & React Router V7**: El núcleo de la aplicación utiliza componentes 100% funcionales (Hooks) minimizando el payload. Implementé `Suspense` y `Lazy Loading` para fraccionar código por rutas.
-- **Transpilación Manual (Webpack 5 + Babel)**: Hice el *setup* completo del bundler desde cero. Esto me permitió un control granular sobre mis minificadores, separaciones de "chunks" y los *loaders* para resolver módulos de SCSS de manera nativa sin contaminaciones de variables globales.
-- **Manejo de Estado Global y Caché**: `@reduxjs/toolkit` (RTK) y **RTK Query**. Implementar el consumo en bruto a la API de Rick & Morty conlleva el riesgo de topes de peticiones (*rate limiting*). RTK Query me garantizó inmutabilidad e instantáneo "refetch caching", centralizando los endpoints en un solo *Store*.
-- **Backend as a Service (BaaS)**: Elegí utilizar **Supabase** de manera nativa (PostgreSQL + Auth) aportando funcionalidades reales de autenticación persistente y Google OAuth en un servidor en vivo. De tal modo, el registro y recuperación de sesiones es 100% verídico.
+### Optimizaciones (Code-Splitting y Lazy Loading)
+Aplicando mi experiencia en rendimiento, no serví la aplicación en un solo bloque estático. Implementé técnicas agresivas de **Code Splitting** a nivel de rutas, utilizando la API `React.lazy()` en conjunto con `Suspense`. Cada vista principal de la aplicación viaja a través del network únicamente cuando el usuario la solicita, manteniendo el flujo principal ligero y cumpliendo con métricas sanas de los *Core Web Vitals*.
 
-## 3 Principios de Código Aplicados
+### Configuración de Enrutamiento Manual
+Basándome en mis patrones de experiencia directos, realicé la configuración de `react-router-dom` v7 de forma **completamente manual**, modelando las barreras de autenticación en la hidratación de estado puro. Diseñé un esquema de *Public* y *Private Routers* a medida, logrando tener un control central de accesos que no dependa ciegamente de librerías externas o middleware de caja negra.
 
-1. **Clean Code & Extracción Agresiva (HOCs y Hooks)**
-   Mantuve limpias mis vistas. Implementé todo el proceso de recuperación de sesiones JWT en un *Higher-Order Component* asíncrono (`AuthProvider`), encapsulando la lectura del caché del navegador y bloqueando los intentos de la UI antes de conocer si un usuario es verídico.
-   
-2. **Cero Constantes de Código Duro (Hardcoded Strings)**
-   En lugar de contaminar el JSX con diccionarios de datos, refactoricé todas las colecciones, configuraciones o "magic strings" a la carpeta de constantes lógicas (`src/constants/`).
-   
-3. **Internacionalización Adaptativa (i18n)**
-   Bajo mi criterio de buenas prácticas para repositorios escalables, mantuve estricta y rígidamente todo el código base (variables, descripciones de commits, documentaciones asíncronas y tipos) en **Inglés**. Por paralelo, trasladé y localicé todo lo que concierne a UI (`frontend strings`) expuesto al usuario a nivel **Español**, adecuándolo al *lore* del universo en cuestión.
+### Mock de API para Formulario Dinámico (Resiliencia)
+Durante la fase técnica, intenté integrar el endpoint del formulario proporcionado en la prueba (*dummyjson.com/c/e357-8ef8...*), sin embargo, dicho entorno se encontraba caído y no retornaba respuestas viables. En lugar de permitir que esto se convirtiera en un bloqueante, **decidí construir y servir mi propio Mock API** (simulación JSON a través de los estáticos locales de Webpack). Esto me garantizó cumplir al 100% el requerimiento de orquestar un "Schema-Driven UI" (Formularios Dinámicos construidos a tiempo de ejecución leyendo JSON puro validando obligatoriedades) sin depender de agentes inestables de terceros.
 
-## Implementación Dinámica (Schema-Driven UI)
+### Integración de Backend con Supabase
+Elegí agregar **Supabase** (Postgres + Auth + OAuth) como Backend-as-a-Service porque tengo una amplia y profunda experiencia profesional operándolo. La facilidad y seguridad que proporciona me permitió dotar al proyecto de un *feeling* completamente **real y premium**; los usuarios de esta prueba pueden crear cuentas en un entorno verídico de bases de datos o logearse instantáneamente con Google, superando con creces la experiencia de una simple persistencia falsa con `localStorage`.
 
-La solicitud exigió renderizar un formulario utilizando un Mock Dinámico. Aprovechando `JSON` servidos localmente por RTK Query, sistematicé un renderizador. El formulario no contiene `<inputs>` escritos a mano; iterativamente lee el diccionario y reacciona de forma automática en base a las dependencias inyectadas, forzando estado *isMandatory* en donde aplique. Esto es extremadamente útil para el desarrollo de dashboards escalables o multi-tenancy.
+### Mantenibilidad, Patrones Estrictos y CSS
+- **Arquitectura Limpia**: Separé estrictamente los ámbitos del software. Aislé cualquier asincronía destructiva mediante Custom Hooks y pasé toda la gestión del estado a `@reduxjs/toolkit` y `RTK Query` para gozar de inmutabilidad y de una caché global contra bloqueístas rate-limits de Rick & Morty.
+- **SCSS Modules**: Escribí variables exclusivas de SCSS Modules en lugar de ensuciar los componentes con clases sueltas. Esto aisla completamente los módulos, evitando dependencias cíclicas de estilos y permitiendo la escalabilidad infinita si colaboraran múltiples ingenieros.
+- **Limpieza de "Magic Strings"**: Todo diccionario numérico o alfabético que fije el modelo de negocio fue extraído a la capa abstracta `src/constants/`, purificando mis componentes React para que actúen únicamente como pintores de la UI.
 
--- Jasan Hernández.
+-- *Jasan Hernández.*
