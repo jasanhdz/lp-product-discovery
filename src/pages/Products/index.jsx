@@ -14,6 +14,7 @@ import {
   CircularProgress
 } from '@mui/material'
 import { Search, FilterList } from '@mui/icons-material'
+import SEO from '@/components/SEO'
 import styles from './styles.module.scss'
 import { setSpecies, setSearchTerm, setStatusFilter } from '@/store/slices/productsUiSlice'
 import { useProductsFeed } from './hooks/useProductsFeed'
@@ -46,6 +47,7 @@ export default function ProductsPage() {
 
   return (
     <Box>
+      <SEO title="Catálogo de Personajes" description="Administra la Whitelist evaluando la fiabilidad de las criaturas a unirte en tu misión." />
       {}
       <Box className={styles.searchBarGlobalWrapper}>
         <Box className={styles.searchBarContainer}>

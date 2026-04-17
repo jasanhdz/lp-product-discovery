@@ -12,6 +12,8 @@ import {
 import styles from './styles.module.scss'
 
 import { useGetDynamicFormSchemaQuery } from '@/store/api/formApi'
+import SEO from '@/components/SEO'
+import { FALLBACK_FORM_SCHEMA } from '@/constants/citadel'
 
 export default function MissionBriefingPage() {
   const { data: formStructure, error: apiError, isLoading } = useGetDynamicFormSchemaQuery()
@@ -150,6 +152,7 @@ export default function MissionBriefingPage() {
 
   return (
     <>
+      <SEO title="Configuración de la Misión" description="Completa el formulario de la Ciudadela antes de entrar al portal interdimensional de R&M." />
       <div className={styles.container}>
         <div className={styles.backgroundEffects} />
 

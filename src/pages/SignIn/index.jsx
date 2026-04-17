@@ -14,6 +14,7 @@ import {
   Alert
 } from '@mui/material'
 import { Visibility, VisibilityOff, Email, Lock } from '@mui/icons-material'
+import SEO from '@/components/SEO'
 import styles from './styles.module.scss'
 
 export default function SignInPage() {
@@ -87,6 +88,7 @@ export default function SignInPage() {
 
   return (
     <div className={styles.container}>
+      <SEO title="Iniciar Sesión" description="Ingresa al portal interdimensional de la Ciudadela con tus credenciales seguras." />
       <div className={styles.glassCard}>
         {}
         <div className={styles.logoArea}>
