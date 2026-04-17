@@ -3,7 +3,7 @@ import { logout } from '@/store/slices/sessionSlice'
 import { AppBar, Toolbar, Box, Typography, Avatar, Button } from '@mui/material'
 import { RocketLaunch, Logout, Favorite } from '@mui/icons-material'
 import styles from './Navbar.module.scss'
-
+import { supabase } from '@/lib/supabase'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 export function Navbar() {
@@ -11,6 +11,11 @@ export function Navbar() {
   const { user } = useAppSelector(state => state.session)
   const navigate = useNavigate()
   const location = useLocation()
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    dispatch(logout())
+  }
 
   return (
     <AppBar position="sticky" elevation={0} className={styles.appBar}>
@@ -65,7 +70,7 @@ export function Navbar() {
           />
           
           <Button 
-            onClick={() => dispatch(logout())}
+            onClick={() => handleLogout()}
             startIcon={<Logout sx={{ fontSize: '1rem !important' }}/>}
             className={styles.logoutBtn}
           >

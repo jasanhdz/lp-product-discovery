@@ -321,6 +321,46 @@
   gap: 8px;
 }
 
+/* OR Divider */
+.dividerRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dividerText {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: rgba(234, 240, 251, 0.3);
+}
+
+/* Google OAuth Button */
+.googleBtn {
+  padding: 12px !important;
+  border-radius: 14px !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgba(234, 240, 251, 0.8) !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  text-transform: none !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  transition: all 0.3s ease !important;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+}
+
 /* Animations */
 @keyframes gridDrift {
   0% {

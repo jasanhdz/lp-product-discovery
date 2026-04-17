@@ -9,7 +9,11 @@ export interface User {
   id: string
   email: string
   name?: string
-  // TODO: ¿Necesitas roles, foto de perfil, url de avatar? Agrégalo aquí.
+  first_name?: string
+  last_name?: string
+  alias?: string
+  species?: string
+  home_dimension?: string
 }
 
 // Estructura completa de este "Slice" de autenticación.
