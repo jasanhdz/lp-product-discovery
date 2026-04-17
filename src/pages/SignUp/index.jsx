@@ -25,29 +25,7 @@ const darkTheme = createTheme({
   }
 })
 
-const DIMENSIONS = [
-  'Dimension C-137',
-  'Dimension C-500A',
-  'Dimension D-99',
-  'Dimension J19ζ7',
-  'Cronenberg Dimension',
-  'Replacement Dimension',
-  'Giant Telepathic Spider Dimension',
-  'Fascist Dimension',
-  'Blender Dimension',
-  'Pizza Dimension'
-]
-
-const SPECIES_LIST = [
-  'Human',
-  'Alien',
-  'Humanoid',
-  'Robot',
-  'Mythological Creature',
-  'Poopybutthole',
-  'Cronenberg',
-  'Unknown'
-]
+import { DIMENSIONS, SPECIES_LIST } from '@/constants/citadel'
 
 export default function SignUpPage() {
   const dispatch = useAppDispatch()

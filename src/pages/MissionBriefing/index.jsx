@@ -14,39 +14,7 @@ import { Navbar } from '@/components/navbar/Navbar'
 import styles from './styles.module.scss'
 
 import { useGetDynamicFormSchemaQuery } from '@/store/api/formApi'
-const FALLBACK_FORM_SCHEMA = [
-  {
-    id: 'mission_name',
-    type: 'text',
-    name: 'missionName',
-    label: 'Mission Codename',
-    placeholder: 'e.g. Operation Phoenix',
-    isMandatory: true
-  },
-  {
-    id: 'target_dimension',
-    type: 'select',
-    name: 'dimension',
-    label: 'Target Dimension',
-    options: ['C-137', 'Cronenberg', 'Blender Dimension', 'Fascist Dimension', 'Pizza Dimension'],
-    isMandatory: true
-  },
-  {
-    id: 'crew_size',
-    type: 'number',
-    name: 'crewSize',
-    label: 'Required Crew Members',
-    placeholder: '3',
-    isMandatory: false
-  },
-  {
-    id: 'portal_gun',
-    type: 'checkbox',
-    name: 'bringPortalGun',
-    label: 'Require Portal Gun Access?',
-    isMandatory: false
-  }
-]
+import { FALLBACK_FORM_SCHEMA } from '@/constants/citadel'
 
 export default function MissionBriefingPage() {
   const { data: formStructure, error: apiError, isLoading } = useGetDynamicFormSchemaQuery()
