@@ -54,14 +54,14 @@ export function Navbar() {
         </Box>
 
         {}
-        <Box sx={{ display: 'flex', gap: 2 }}>
+        <Box className={styles.navLinksContainer}>
           <Box
             className={styles.missionBadge}
             sx={{ cursor: 'pointer', opacity: location.pathname === '/products' ? 1 : 0.6 }}
             onClick={() => navigate('/products')}
           >
             <div className={styles.missionDot} />
-            CATÁLOGO
+            <span className={styles.badgeLabel}>CATÁLOGO</span>
           </Box>
 
           <Box
@@ -74,8 +74,8 @@ export function Navbar() {
             }}
             onClick={() => navigate('/whitelist')}
           >
-            <Favorite sx={{ fontSize: '1rem', mr: 1, mb: '2px' }} />
-            FAVORITOS
+            <Favorite sx={{ fontSize: '1rem', mb: '2px' }} className={styles.badgeIcon} />
+            <span className={styles.badgeLabel}>FAVORITOS</span>
           </Box>
 
           <Box
@@ -90,8 +90,8 @@ export function Navbar() {
             }}
             onClick={() => navigate('/products/new')}
           >
-            <Assignment sx={{ fontSize: '1rem', mr: 1, mb: '2px' }} />
-            NUEVA MISIÓN
+            <Assignment sx={{ fontSize: '1rem', mb: '2px' }} className={styles.badgeIcon} />
+            <span className={styles.badgeLabel}>NUEVA MISIÓN</span>
           </Box>
         </Box>
 
