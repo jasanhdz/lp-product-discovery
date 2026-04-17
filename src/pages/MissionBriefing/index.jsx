@@ -152,7 +152,10 @@ export default function MissionBriefingPage() {
 
   return (
     <>
-      <SEO title="Configuración de la Misión" description="Completa el formulario de la Ciudadela antes de entrar al portal interdimensional de R&M." />
+      <SEO
+        title='Configuración de la Misión'
+        description='Completa el formulario de la Ciudadela antes de entrar al portal interdimensional de R&M.'
+      />
       <div className={styles.container}>
         <div className={styles.backgroundEffects} />
 

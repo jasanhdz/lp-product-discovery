@@ -47,7 +47,10 @@ export default function ProductsPage() {
 
   return (
     <Box>
-      <SEO title="Catálogo de Personajes" description="Administra la Whitelist evaluando la fiabilidad de las criaturas a unirte en tu misión." />
+      <SEO
+        title='Catálogo de Personajes'
+        description='Administra la Whitelist evaluando la fiabilidad de las criaturas a unirte en tu misión.'
+      />
       {}
       <Box className={styles.searchBarGlobalWrapper}>
         <Box className={styles.searchBarContainer}>

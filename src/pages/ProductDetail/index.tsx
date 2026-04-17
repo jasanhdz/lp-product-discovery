@@ -42,8 +42,8 @@ export default function ProductDetailPage() {
   return (
     <Box className={styles.pageWrapper}>
       {character && (
-        <SEO 
-          title={character.name} 
+        <SEO
+          title={character.name}
           description={`Expediente #${character.id}: ${character.species} del planeta ${character.origin?.name || 'Desconocido'}. Estado actual: ${character.status}.`}
         />
       )}

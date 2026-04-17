@@ -13,21 +13,21 @@ export const SEO = ({ title, description, url = 'https://lp-product-discovery.ve
     <Helmet>
       {/* Metadatos Estándar */}
       <title>{currentTitle}</title>
-      <meta name="description" content={currentDescription} />
+      <meta name='description' content={currentDescription} />
 
       {/* Open Graph (Facebook / LinkedIn / Slack) */}
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content={url} />
-      <meta property="og:title" content={currentTitle} />
-      <meta property="og:description" content={currentDescription} />
-      <meta property="og:image" content={DEFAULT_IMAGE} />
+      <meta property='og:type' content='website' />
+      <meta property='og:url' content={url} />
+      <meta property='og:title' content={currentTitle} />
+      <meta property='og:description' content={currentDescription} />
+      <meta property='og:image' content={DEFAULT_IMAGE} />
 
       {/* Twitter Cards */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content={url} />
-      <meta name="twitter:title" content={currentTitle} />
-      <meta name="twitter:description" content={currentDescription} />
-      <meta name="twitter:image" content={DEFAULT_IMAGE} />
+      <meta name='twitter:card' content='summary_large_image' />
+      <meta name='twitter:url' content={url} />
+      <meta name='twitter:title' content={currentTitle} />
+      <meta name='twitter:description' content={currentDescription} />
+      <meta name='twitter:image' content={DEFAULT_IMAGE} />
     </Helmet>
   )
 }

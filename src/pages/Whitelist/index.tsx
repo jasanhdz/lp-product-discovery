@@ -28,7 +28,7 @@ export default function WhitelistPage() {
 
   return (
     <Box className={gridStyles.pageContainer}>
-      <SEO title="Favoritos de la Tripulación" description="Supervisa tu lista privada de entidades favoritas." />
+      <SEO title='Favoritos de la Tripulación' description='Supervisa tu lista privada de entidades favoritas.' />
       <Box className={gridStyles.catalogHeader}>
         <Typography className={gridStyles.catalogTitle}>Portafolio de Favoritos</Typography>
         <Typography className={gridStyles.catalogSub}>
